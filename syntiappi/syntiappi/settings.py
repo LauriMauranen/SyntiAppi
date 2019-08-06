@@ -1,5 +1,3 @@
-import django_heroku
-
 """
 Django settings for syntiappi project.
 
@@ -76,6 +74,8 @@ WSGI_APPLICATION = 'syntiappi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -124,5 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+import django.heroku
 
 django_heroku.settings(locals())
