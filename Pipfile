@@ -11,6 +11,8 @@ pandas = "*"
 numpy = "*"
 matplotlib = "*"
 psycopg2 = "*"
+gunicorn = "*"
+django-heroku = "*"
 
 [requires]
 python_version = "3.6"
