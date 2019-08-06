@@ -77,11 +77,12 @@ WSGI_APPLICATION = 'syntiappi.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'lauri',
-    }
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'lauri',
+#    }
 }
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
