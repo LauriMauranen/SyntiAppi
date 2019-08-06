@@ -78,12 +78,16 @@ import dj_database_url
 
 DATABASES = {
     'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'lauri',
-        'CONN_MAX_AGE': 500
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'lauri',
     }
 }
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+db_config = dj_database_url.config(conn_max_age=600, ssl_require=True)
+if db_config:
+    DATABASES['default'] =  db_config
 
 
 # Password validation
