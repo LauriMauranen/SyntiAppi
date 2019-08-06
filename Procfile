@@ -1,1 +1,1 @@
-web: cd syntiappi && gunicorn syntiappi.wsgi
+web: cd syntiappi && gunicorn syntiappi.wsgi --log-file -
