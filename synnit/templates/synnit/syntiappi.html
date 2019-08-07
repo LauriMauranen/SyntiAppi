@@ -1,0 +1,14 @@
+<center>
+<h1>SyntiAppi</h1>
+<form method="post">
+    {% csrf_token  %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+{% if nayta_kuva %}
+<img src= ../{{ MEDIA_URL }}taulukko_syntinen.png>
+{% endif %}
+</center>
+
+
+

@@ -1,5 +1,10 @@
-import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
+import os
+import pandas as pd
+
+from django.conf import settings
+from synnit.models import TunnustettuSynti
 
 def length(x):
     if(np.isscalar(x)):
@@ -42,6 +47,48 @@ def tee_csv(tunnustettu_synti_lista):
     df = pd.DataFrame(data, index=rivit, columns=sarakkeet)
     df.sort_index(axis=0, inplace=True)
     df.sort_index(axis=1, inplace=True)
-    df.to_csv(path_or_buf='csv/testi.csv')
+    df.to_csv(path_or_buf='data/testi.csv')
+
+def taulukko_yksi_syntinen(synnintekija):
+    
+    syntilista = TunnustettuSynti.objects.filter(tekija=synnintekija)
+    
+    path = settings.MEDIA_ROOT
+    filename = 'taulukko_syntinen.png'
+
+    if not syntilista.exists():
+        #os.remove(os.path.join(path, filename))
+        return
+
+    synnit_nimi = []
+    synnit_maara = []
+    
+    for synti in syntilista.all():
+        synnit_nimi.append(synti.laatu.laatu_nimi)
+        synnit_maara.append(synti.kpl)
+
+    synnit_nimi = [sana.lower() for sana in synnit_nimi]
+    
+    fig, ax = plt.subplots()
+    
+    plöö = np.arange(len(synnit_maara))
+
+    ax.barh(plöö, synnit_maara)
+    ax.set_yticks(plöö)
+    ax.set_yticklabels(synnit_nimi)
+    ax.invert_yaxis()
+    ax.set_xlabel("Syntejä kulunut")
+    ax.set_title("{} {} tehnyt syntiä:".format(synnintekija.etunimi, synnintekija.sukunimi))
+    
+    fig.savefig(os.path.join(path, filename))
+    
+
+
+
+
+
+
+
+
 
 
