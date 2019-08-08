@@ -13,7 +13,7 @@ class Synnintekija(models.Model):
     sukunimi = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.etunimi+' '+self.sukunimi
+        return cap(self.etunimi)+' '+cap(self.sukunimi)
 
     def save(self, *args, **kwargs):
         self.etunimi = cap(self.etunimi)

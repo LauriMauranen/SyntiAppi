@@ -81,8 +81,15 @@ def taulukko_yksi_syntinen(synnintekija):
     ax.set_title("{} {} tehnyt syntiä:".format(synnintekija.etunimi, synnintekija.sukunimi))
     
     fig.savefig(os.path.join(path, filename))
-    
 
+from django.core.cache import cache
+from numpy.random import randint
+
+def aseta_cache_tarkistus(palauta=False):
+    luku = randint(2, 1000)
+    cache.set('tarkistusluku_cache', luku)
+    if(palauta):
+        return luku
 
 
 

@@ -91,6 +91,19 @@ if db_config:
     DATABASES['default'] =  db_config
 
 
+from syntiappi.memcache_get_cache import get_cache
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': [
+            '0.0.0.0:5000',
+            '/cache'
+        ]        
+   }
+}
+CACHES = get_cache()
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 

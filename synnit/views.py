@@ -1,47 +1,48 @@
-from django.conf import settings
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.core.cache import cache
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 
 from synnit.forms import SyntiForm
-from synnit.lauriextra import taulukko_yksi_syntinen
+from synnit.lauriextra import taulukko_yksi_syntinen, aseta_cache_tarkistus
 from synnit.models import TunnustettuSynti, Synnintekija
 
 import numpy.random as npr
 import os
 
-glo = npr.randint(1, 10000000000)
+def tarkista(tarkistus):
+    tarkistus_cache = cache.get('tarkistusluku_cache')
+    if(tarkistus_cache == tarkistus):
+        tarkistus = 1
+        return False
+    else:
+        return tarkistus
 
-def SyntiAppi(request, luku=0):
-
-    global glo
-
-    if(glo == luku):
-        luku = 1
-    elif(luku != 0):
-        glo = npr.randint(1, 10000000000)
-        return HttpResponseNotFound('<h1>Sivua ei löytynyt</h1>')
+def SyntiAppi(request, tarkistus=0):
+    
+    # Tässä sivun salausta
+    if(tarkista(tarkistus)):
+        return HttpResponseRedirect(reverse('SyntiAppi', kwargs={'tarkistus': 0}))
 
     if request.method == 'POST':
-        form = SyntiForm(request.POST)
+        form = SyntiForm(request.POST, initial={'tekija': cache.get('tekija_cache')})
         
         if form.is_valid():
-            
             form.save()
             
-            tekija_id = form['tekija'].value()
-            tekija = get_object_or_404(Synnintekija, pk=tekija_id)
+            tekija = get_object_or_404(Synnintekija, pk=form['tekija'].value())
             taulukko_yksi_syntinen(tekija)            
 
-            glo = npr.randint(1, 10000000000)
+            tarkistus = aseta_cache_tarkistus(palauta=True)
+            cache.set('tekija_cache', tekija)
             
-            return HttpResponseRedirect(reverse('SyntiAppi', kwargs={'luku': glo}))
+            return HttpResponseRedirect(reverse('SyntiAppi', kwargs={'tarkistus': tarkistus}))
     else:
         form = SyntiForm()
     
     return render(request, 'synnit/syntiappi.html', {'form': form,
-                                                     'nayta_kuva': luku})
+                                                     'nayta_kuva': tarkistus})
 
 def Yhteenveto(request):
     return

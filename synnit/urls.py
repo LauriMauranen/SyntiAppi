@@ -6,6 +6,6 @@ from . import views
 
 urlpatterns = [
         path('', views.SyntiAppi, name='SyntiAppi'),
-        path('<int:luku>/', views.SyntiAppi, name='SyntiAppi'),
+        path('<int:tarkistus>/', views.SyntiAppi, name='SyntiAppi'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

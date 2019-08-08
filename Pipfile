@@ -15,6 +15,7 @@ gunicorn = "*"
 django-heroku = "*"
 dj-database-url = "*"
 whitenoise = "*"
+pylibmc = "*"
 
 [requires]
 python_version = "3.6"
