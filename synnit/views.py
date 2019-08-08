@@ -12,10 +12,14 @@ import numpy.random as npr
 import os
 
 def tarkista(tarkistus):
-    tarkistus_cache = cache.get('tarkistusluku_cache')
-    if(tarkistus_cache == tarkistus):
+    
+    if(tarkistus == 0):
+        cache.delete('tekija_cache')
+    
+    if(cache.get('tarkistusluku_cache') == tarkistus):
         tarkistus = 1
         return False
+    
     else:
         return tarkistus
 
@@ -26,7 +30,7 @@ def SyntiAppi(request, tarkistus=0):
         return HttpResponseRedirect(reverse('SyntiAppi', kwargs={'tarkistus': 0}))
 
     if request.method == 'POST':
-        form = SyntiForm(request.POST, initial={'tekija': cache.get('tekija_cache')})
+        form = SyntiForm(request.POST)
         
         if form.is_valid():
             form.save()
@@ -39,7 +43,7 @@ def SyntiAppi(request, tarkistus=0):
             
             return HttpResponseRedirect(reverse('SyntiAppi', kwargs={'tarkistus': tarkistus}))
     else:
-        form = SyntiForm()
+        form = SyntiForm(initial={'tekija': cache.get('tekija_cache')})
     
     return render(request, 'synnit/syntiappi.html', {'form': form,
                                                      'nayta_kuva': tarkistus})
