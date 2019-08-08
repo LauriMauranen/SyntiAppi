@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
@@ -27,7 +27,7 @@ def SyntiAppi(request, tarkistus=0):
     
     # Tässä sivun salausta
     if(tarkista(tarkistus)):
-        return HttpResponseRedirect(reverse('SyntiAppi', kwargs={'tarkistus': 0}))
+        raise Http404()
 
     if request.method == 'POST':
         form = SyntiForm(request.POST)
@@ -36,9 +36,12 @@ def SyntiAppi(request, tarkistus=0):
             form.save()
             
             tekija = get_object_or_404(Synnintekija, pk=form['tekija'].value())
-            taulukko_yksi_syntinen(tekija)            
-
-            tarkistus = aseta_cache_tarkistus(palauta=True)
+            
+            if not taulukko_yksi_syntinen(tekija):
+                tarkistus = 0
+            else:
+                tarkistus = aseta_cache_tarkistus(palauta=True)
+            
             cache.set('tekija_cache', tekija)
             
             return HttpResponseRedirect(reverse('SyntiAppi', kwargs={'tarkistus': tarkistus}))

@@ -57,8 +57,7 @@ def taulukko_yksi_syntinen(synnintekija):
     filename = 'taulukko_syntinen.png'
 
     if not syntilista.exists():
-        #os.remove(os.path.join(path, filename))
-        return
+        return False
 
     synnit_nimi = []
     synnit_maara = []
@@ -77,10 +76,11 @@ def taulukko_yksi_syntinen(synnintekija):
     ax.set_yticks(plöö)
     ax.set_yticklabels(synnit_nimi)
     ax.invert_yaxis()
-    ax.set_xlabel("Syntejä kulunut")
-    ax.set_title("{} {} tehnyt syntiä:".format(synnintekija.etunimi, synnintekija.sukunimi))
+    ax.set_xlabel("kpl")
+    ax.set_title("{} {} tehnyt syntiä".format(synnintekija.etunimi, synnintekija.sukunimi))
     
     fig.savefig(os.path.join(path, filename))
+    return True
 
 from django.core.cache import cache
 from numpy.random import randint
