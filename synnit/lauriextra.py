@@ -6,12 +6,14 @@ import pandas as pd
 from django.conf import settings
 from synnit.models import TunnustettuSynti
 
+
 def length(x):
     if(np.isscalar(x)):
         pituus = 1
     else:
         pituus = len(x)
     return pituus
+
 
 def tee_csv(tunnustettu_synti_lista):
     
@@ -49,6 +51,12 @@ def tee_csv(tunnustettu_synti_lista):
     df.sort_index(axis=1, inplace=True)
     df.to_csv(path_or_buf='data/testi.csv')
 
+
+from matplotlib import rcParams
+
+rcParams.update({'figure.autolayout': True})
+
+
 def taulukko_yksi_syntinen(synnintekija):
     
     syntilista = TunnustettuSynti.objects.filter(tekija=synnintekija)
@@ -82,11 +90,13 @@ def taulukko_yksi_syntinen(synnintekija):
     fig.savefig(os.path.join(path, filename))
     return True
 
+
 from django.core.cache import cache
 from numpy.random import randint
 
+
 def aseta_cache_tarkistus(palauta=False):
-    luku = randint(2, 1000)
+    luku = randint(2, 1000000)
     cache.set('tarkistusluku_cache', luku)
     if(palauta):
         return luku

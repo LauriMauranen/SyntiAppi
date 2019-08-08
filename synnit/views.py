@@ -13,20 +13,21 @@ import os
 
 def tarkista(tarkistus):
     
-    if(tarkistus == 0):
-        cache.delete('tekija_cache')
-    
     if(cache.get('tarkistusluku_cache') == tarkistus):
-        tarkistus = 1
-        return False
+        return True, False
     
-    else:
-        return tarkistus
+    elif(tarkistus == 1):
+        cache.delete('tekija_cache')
+        aseta_cache_tarkistus()
+        return False, False
+    
+    return False, True
 
-def SyntiAppi(request, tarkistus=0):
-    
-    # Tässä sivun salausta
-    if(tarkista(tarkistus)):
+def SyntiAppi(request, tarkistus=1):
+
+    # Tässä sivun salausta ja näyttää vai ei näyttää kuva
+    nayta_kuva, laukaise404 = tarkista(tarkistus)
+    if(laukaise404):
         raise Http404()
 
     if request.method == 'POST':
@@ -38,7 +39,7 @@ def SyntiAppi(request, tarkistus=0):
             tekija = get_object_or_404(Synnintekija, pk=form['tekija'].value())
             
             if not taulukko_yksi_syntinen(tekija):
-                tarkistus = 0
+                tarkistus = 1
             else:
                 tarkistus = aseta_cache_tarkistus(palauta=True)
             
@@ -49,7 +50,7 @@ def SyntiAppi(request, tarkistus=0):
         form = SyntiForm(initial={'tekija': cache.get('tekija_cache')})
     
     return render(request, 'synnit/syntiappi.html', {'form': form,
-                                                     'nayta_kuva': tarkistus})
+                                                     'nayta_kuva': nayta_kuva})
 
 def Yhteenveto(request):
     return
