@@ -17,6 +17,9 @@ dj-database-url = "*"
 whitenoise = "*"
 pylibmc = "*"
 django-bmemcached = "*"
+djangorestframework = "*"
+pygments = "*"
+httpie = "*"
 
 [requires]
 python_version = "3.6"

@@ -1,14 +1,15 @@
-from django.db import models
+from django.db import models 
+from synnit.lauriextra import  cap, tarkista_malli 
+
 
 class Syntilaatu(models.Model):
-    
     laatu_nimi = models.CharField(max_length=100, primary_key=True)
 
     def __str__(self):
         return self.laatu_nimi
 
+
 class Synnintekija(models.Model):
-    
     etunimi = models.CharField(max_length=100)
     sukunimi = models.CharField(max_length=100)
 
@@ -20,8 +21,10 @@ class Synnintekija(models.Model):
         self.sukunimi = cap(self.sukunimi)
         super().save(*args, **kwargs)
 
-class TunnustettuSynti(models.Model):
 
+from django.urls import reverse 
+
+class TunnustettuSynti(models.Model):
     tekija = models.ForeignKey(Synnintekija, on_delete=models.CASCADE)
     laatu = models.ForeignKey(Syntilaatu, on_delete=models.CASCADE)
     kpl = models.SmallIntegerField()
@@ -30,29 +33,14 @@ class TunnustettuSynti(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['tekija', 'laatu'], name='kyrsa')
         ]
+    
+    def get_absolute_url(self):
+        return reverse('syntiappi_kuvalla')
+        
+    def save(self, *args, **kwargs):
+        self.kpl = tarkista_malli(self.tekija.id, self.laatu, self.kpl, TunnustettuSynti)
+        if(self.kpl > 0):
+            super(TunnustettuSynti, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.tekija.etunimi+' '+self.tekija.sukunimi+', '+self.laatu.laatu_nimi+', '+str(self.kpl)
-
-    def save(self, *args, **kwargs):       
-        self.kpl = tarkista_malli(self.tekija.id, 
-                                  self.laatu.laatu_nimi, 
-                                  self.kpl)
-
-        if(self.kpl > 0):    
-            super().save(*args, **kwargs)
-
-def tarkista_malli(tekija_id, laatu_nimi, kpl):
-    mahdollinen_tekija = TunnustettuSynti.objects.filter(tekija=tekija_id, 
-                                                         laatu=laatu_nimi)
-    if  mahdollinen_tekija.exists():
-        syyllinen = mahdollinen_tekija.get()            
-        kpl += syyllinen.kpl
-        syyllinen.delete()
-
-    return kpl
-
-def cap(sana):
-    return sana.capitalize()
-    
-
+        return self.tekija+' '+self.laatu+', '+str(self.kpl)

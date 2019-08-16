@@ -1,0 +1,21 @@
+<head>
+    <style>
+        body {
+            background-color: green;
+        }
+    </style>
+</head>
+
+
+<center>
+<h1>SyntiAppi</h1>
+<form method="post">
+    {% csrf_token  %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+<img src= ../{{ MEDIA_URL }}taulukko_syntinen.png width="640" height="480">
+</center>
+
+
+

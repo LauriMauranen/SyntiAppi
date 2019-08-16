@@ -9,4 +9,4 @@ class SyntiForm(ModelForm):
         fields = ['tekija', 'laatu', 'kpl']
         
     def validate_unique(self):
-        return
+        return True

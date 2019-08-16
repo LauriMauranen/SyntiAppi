@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # jälkeen lisätyt
+    'rest_framework',
     'synnit.apps.SynnitConfig',
 ]
 
@@ -81,8 +83,8 @@ import dj_database_url
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'lauri',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -93,15 +95,6 @@ if db_config:
 
 from syntiappi.memcache_get_cache import get_cache
 
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#        'LOCATION': [
-#            '0.0.0.0:5000',
-#            '/cache'
-#        ]        
-#   }
-#}
 CACHES = get_cache()
 
 # Password validation
@@ -144,9 +137,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'data/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'data/media/')
 MEDIA_URL = 'data/media/'
 
 import django_heroku
 
 django_heroku.settings(locals())
+
+#REST_FRAMEWORK = {
+#    'DEFAULT_PERMISSION_CLASSES': [
+#        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'    
+#    ]        
+#}
