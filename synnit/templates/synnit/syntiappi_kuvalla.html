@@ -1,21 +1,24 @@
 <head>
-    <style>
-        body {
-            background-color: green;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 </head>
 
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
 
 <center>
-<h1>SyntiAppi</h1>
-<form method="post">
-    {% csrf_token  %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
-<img src= ../{{ MEDIA_URL }}taulukko_syntinen.png width="640" height="480">
+    <h1>Syntiappi</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form size='small' show_label=False %}
+        {% bootstrap_button content='Synti' %}
+    </form>
+    <canvas id="syntitaulukko" width="400" height="400"></canvas>
+    <script>
+        var synnit_nimi = {{synnit_nimi|safe}};
+        var synnit_maara = {{synnit_maara|safe}};
+    </script>
+    <script src="../static/taulukko.js"></script>
 </center>
-
-
-

@@ -1,18 +1,23 @@
-import numpy as np
-import os
-
-from django.core.cache import cache
-from numpy.random import randint
-
-def aseta_cache_tarkistus(palauta=False):
-    luku = randint(2, 1000000)
-    cache.set('tarkistusluku_cache', luku)
-    if(palauta):
-        return luku
-
-
 def cap(sana):
     return sana.capitalize()
+
+
+import numpy as np 
+
+def lisaa_nimet_maarat(context, tekija, tunnustettusynti_malli):
+
+    syntilista = tunnustettusynti_malli.objects.filter(tekija=tekija)
+
+    if syntilista.exists():
+        synnit_nimi = []
+        synnit_maara = []
+        for synti in syntilista.all():
+            synnit_nimi.append(synti.laatu.laatu_nimi)
+            synnit_maara.append(synti.kpl)
+        context['synnit_nimi'] = synnit_nimi
+        context['synnit_maara'] = synnit_maara
+
+    return context 
 
 
 def length(x):
@@ -23,51 +28,26 @@ def length(x):
     return pituus
 
 
-def tarkista(tarkistus):
+def tarkista_malli(tekija_id, laatu, malli):
 
-    if(cache.get('tarkistusluku_cache') == tarkistus):
-        return True, False
+    vastaus = 0
 
-    elif(tarkistus == 1):
-        cache.delete('tekija_cache')
-        aseta_cache_tarkistus()
-        return False, False
-
-    return False, True
-
-
-from django.shortcuts import get_object_or_404
-
-def tarkista_malli(id, laatu, kpl, malli):
-
-    mahdollinen_tekija = malli.objects.filter(tekija=id, laatu=laatu)
+    mahdollinen_tekija = malli.objects.filter(tekija=tekija_id, laatu=laatu)
 
     if  mahdollinen_tekija.exists():
         syyllinen = mahdollinen_tekija.get()
-        kpl += syyllinen.kpl
+        vastaus = syyllinen.kpl
         syyllinen.delete()
 
-    return kpl 
+    return vastaus 
 
 
-from django.conf import settings
-from django.shortcuts import get_object_or_404
-from matplotlib import rcParams 
-
-import matplotlib.pyplot as plt
-
-rcParams.update({'figure.autolayout': True})
-
-def taulukko_yksi_syntinen(tekija_id, tunnustettusynti_malli, synnintekija_malli):
-
-    synnintekija = get_object_or_404(synnintekija_malli,pk=tekija_id)
+def taulukko_yksi_syntinen(synnintekija, tunnustettusynti_malli):
+    
     syntilista = tunnustettusynti_malli.objects.filter(tekija=synnintekija)
-
-    path = settings.MEDIA_ROOT
-    filename = 'taulukko_syntinen.png'
-
+    
     if not syntilista.exists():
-        return False
+        return None 
 
     synnit_nimi = []
     synnit_maara = []
@@ -75,23 +55,8 @@ def taulukko_yksi_syntinen(tekija_id, tunnustettusynti_malli, synnintekija_malli
     for synti in syntilista.all():
         synnit_nimi.append(synti.laatu.laatu_nimi)
         synnit_maara.append(synti.kpl)
-
-    synnit_nimi = [sana.lower() for sana in synnit_nimi]
-
-    fig, ax = plt.subplots()
-
-    plöö = np.arange(len(synnit_maara))
-
-    ax.barh(plöö, synnit_maara)
-    ax.set_yticks(plöö)
-    ax.set_yticklabels(synnit_nimi)
-    ax.invert_yaxis()
-    ax.set_xlabel("kpl")
-    ax.set_title("{} {} tehnyt syntiä".format(synnintekija.etunimi, synnintekija.sukunimi))
-
-    fig.savefig(os.path.join(path, filename))
-    return True
-
+    
+    return synnit_nimi, synnit_maara 
 
 import pandas as pd
 

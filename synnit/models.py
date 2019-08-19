@@ -38,7 +38,7 @@ class TunnustettuSynti(models.Model):
         return reverse('syntiappi_kuvalla')
         
     def save(self, *args, **kwargs):
-        self.kpl = tarkista_malli(self.tekija.id, self.laatu, self.kpl, TunnustettuSynti)
+        self.kpl += tarkista_malli(self.tekija.id, self.laatu, TunnustettuSynti)
         if(self.kpl > 0):
             super(TunnustettuSynti, self).save(*args, **kwargs)
 

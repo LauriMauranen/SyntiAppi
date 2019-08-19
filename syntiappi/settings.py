@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # jälkeen lisätyt
+    'bootstrap4',
     'rest_framework',
     'synnit.apps.SynnitConfig',
 ]
