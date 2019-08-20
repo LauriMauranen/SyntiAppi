@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # jälkeen lisätyt
     'bootstrap4',
-    'rest_framework',
     'synnit.apps.SynnitConfig',
 ]
 
@@ -144,9 +143,3 @@ MEDIA_URL = 'data/media/'
 import django_heroku
 
 django_heroku.settings(locals())
-
-#REST_FRAMEWORK = {
-#    'DEFAULT_PERMISSION_CLASSES': [
-#        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'    
-#    ]        
-#}

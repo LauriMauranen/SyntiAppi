@@ -2,23 +2,27 @@ def cap(sana):
     return sana.capitalize()
 
 
-import numpy as np 
+def lisaa_nimet_maarat(context, tekija_id, tunnustettusynti_malli):
 
-def lisaa_nimet_maarat(context, tekija, tunnustettusynti_malli):
-
-    syntilista = tunnustettusynti_malli.objects.filter(tekija=tekija)
+    syntilista = tunnustettusynti_malli.objects.filter(tekija=tekija_id)
 
     if syntilista.exists():
+        
         synnit_nimi = []
         synnit_maara = []
+        
         for synti in syntilista.all():
             synnit_nimi.append(synti.laatu.laatu_nimi)
             synnit_maara.append(synti.kpl)
+        
         context['synnit_nimi'] = synnit_nimi
         context['synnit_maara'] = synnit_maara
+        context['synnintekija'] = syntilista.first().tekija
 
     return context 
 
+
+import numpy as np 
 
 def length(x):
     if(np.isscalar(x)):
@@ -41,22 +45,6 @@ def tarkista_malli(tekija_id, laatu, malli):
 
     return vastaus 
 
-
-def taulukko_yksi_syntinen(synnintekija, tunnustettusynti_malli):
-    
-    syntilista = tunnustettusynti_malli.objects.filter(tekija=synnintekija)
-    
-    if not syntilista.exists():
-        return None 
-
-    synnit_nimi = []
-    synnit_maara = []
-
-    for synti in syntilista.all():
-        synnit_nimi.append(synti.laatu.laatu_nimi)
-        synnit_maara.append(synti.kpl)
-    
-    return synnit_nimi, synnit_maara 
 
 import pandas as pd
 

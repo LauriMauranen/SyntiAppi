@@ -4,7 +4,7 @@
 
 {% load bootstrap4 %}
 {% bootstrap_css %}
-{% bootstrap_javascript jquery='full' %}
+{% bootstrap_javascript jquery="full" %}
 {% bootstrap_messages %}
 
 <center>
@@ -12,13 +12,20 @@
     
     <form method="post">
         {% csrf_token %}
-        {% bootstrap_form form size='small' show_label=False %}
-        {% bootstrap_button content='Synti' %}
+        {% bootstrap_form form show_label=False field_class="col-sm-3 align-self-center" %}
+        {% bootstrap_button content="Tunnusta syntisi" %}
     </form>
-    <canvas id="syntitaulukko" width="400" height="400"></canvas>
-    <script>
-        var synnit_nimi = {{synnit_nimi|safe}};
-        var synnit_maara = {{synnit_maara|safe}};
-    </script>
-    <script src="../static/taulukko.js"></script>
+    
+    {% if synnit_nimi %}
+    <div class="chart'container" style="position: relative; height: 50vh; width: 60vw">
+        <canvas id="syntitaulukko"></canvas>
+        <script>
+            var synnit_nimi = {{synnit_nimi|safe}};
+            var synnit_maara = {{synnit_maara|safe}};
+            var synnintekija = "{{synnintekija}}"
+        </script>
+        <script src="static/taulukko.js"></script>
+    </div>
+    {% endif %}
+
 </center>
