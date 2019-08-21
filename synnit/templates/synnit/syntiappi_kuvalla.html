@@ -18,16 +18,15 @@
     </form>
     
     {% if synnit_nimi %}
-    <div class="chart-container" style="height: 80vh; width: 80vw;">
-
-        <canvas id="syntitaulukko"></canvas>
-        <script>
-            var synnit_nimi = {{synnit_nimi|safe}};
-            var synnit_maara = {{synnit_maara|safe}};
-            var synnintekija = "{{synnintekija}}"
-        </script>
-        <script src="static/taulukko.js"></script>
+    <div class="chart-container" style="max-width:450px;">
+        <canvas id="syntitaulukko" height="1" width="1"></canvas>
     </div>
+    <script>
+        var synnit_nimi = {{synnit_nimi|safe}};
+        var synnit_maara = {{synnit_maara|safe}};
+        var synnintekija = "{{synnintekija}}"
+    </script>
+    <script src="static/taulukko.js"></script>
     {% endif %}
 
 </center>
