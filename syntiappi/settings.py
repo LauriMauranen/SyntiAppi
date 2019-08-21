@@ -20,7 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zps_4_ysx8syx=c9rd*)^qg_wy6i_$u^g5ijto%+2hy@zry2s*'
+#SECRET_KEY = 'zps_4_ysx8syx=c9rd*)^qg_wy6i_$u^g5ijto%+2hy@zry2s*'
+with open(os.path.join(BASE_DIR, 'kansio/secret_key.txt')) as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -137,8 +139,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'data/media/')
-MEDIA_URL = 'data/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media/')
+MEDIA_URL = '/media/'
 
 import django_heroku
 
