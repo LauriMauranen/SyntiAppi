@@ -1,4 +1,5 @@
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 </head>
 
@@ -12,12 +13,13 @@
     
     <form method="post">
         {% csrf_token %}
-        {% bootstrap_form form show_label=False field_class="col-sm-3 align-self-center" %}
+        {% bootstrap_form form show_label=False field_class="col-sm-4 align-self-center" %}
         {% bootstrap_button content="Tunnusta syntisi" %}
     </form>
     
     {% if synnit_nimi %}
-    <div class="chart'container" style="position: relative; height: 50vh; width: 60vw">
+    <div class="chart-container" style="height: 80vh; width: 80vw;">
+
         <canvas id="syntitaulukko"></canvas>
         <script>
             var synnit_nimi = {{synnit_nimi|safe}};

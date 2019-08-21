@@ -2,6 +2,8 @@ var colors = ['blue','red','green','yellow','purple','orange','pink','brown','cy
 
 var ctx = 'syntitaulukko';
 var myChart = new Chart(ctx, {
+    responsive: true,
+    maintainAspectRatio: true,
     type: 'doughnut',
     data: {
         labels: synnit_nimi,
@@ -13,7 +15,7 @@ var myChart = new Chart(ctx, {
     options: {
         title: {
             display: true,
-            text: synnintekija+ ' on tehnyt syntiä'
+            text: synnintekija + ' on tehnyt syntiä'
         }
     }
 });
