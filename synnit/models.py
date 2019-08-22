@@ -17,8 +17,8 @@ class Synnintekija(models.Model):
         return cap(self.etunimi)+' '+cap(self.sukunimi)
 
     def save(self, *args, **kwargs):
-        self.etunimi = cap(self.etunimi)
-        self.sukunimi = cap(self.sukunimi)
+#        self.etunimi = cap(self.etunimi)
+#        self.sukunimi = cap(self.sukunimi)
         super().save(*args, **kwargs)
 
 
@@ -43,4 +43,4 @@ class TunnustettuSynti(models.Model):
             super(TunnustettuSynti, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.tekija+' '+self.laatu+', '+str(self.kpl)
+        return str(self.tekija)+' '+str(self.laatu)+', '+str(self.kpl)

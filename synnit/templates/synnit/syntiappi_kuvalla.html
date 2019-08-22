@@ -14,7 +14,7 @@
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form show_label=False field_class="col-sm-4 align-self-center" %}
-        {% bootstrap_button content="Tunnusta syntisi" %}
+        <input type="submit" value="Tunnusta synnit">
     </form>
     
     {% if synnit_nimi %}
