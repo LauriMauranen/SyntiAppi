@@ -2,8 +2,9 @@ def cap(sana):
     return sana.capitalize()
 
 
-def lisaa_nimet_maarat(context, tekija_id, tunnustettusynti_malli):
+def lisaa_nimet_maarat(context, form, tunnustettusynti_malli):
 
+    tekija_id = form['tekija'].value()
     syntilista = tunnustettusynti_malli.objects.filter(tekija=tekija_id)
 
     if syntilista.exists():
@@ -18,6 +19,8 @@ def lisaa_nimet_maarat(context, tekija_id, tunnustettusynti_malli):
         context['synnit_nimi'] = synnit_nimi
         context['synnit_maara'] = synnit_maara
         context['synnintekija'] = syntilista.first().tekija
+        context['laatu'] = form['laatu'].value()
+        context['kpl'] = form['kpl'].value()
 
     return context 
 

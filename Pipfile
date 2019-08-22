@@ -17,9 +17,7 @@ dj-database-url = "*"
 whitenoise = "*"
 pylibmc = "*"
 django-bmemcached = "*"
-djangorestframework = "*"
 pygments = "*"
-httpie = "*"
 django-bootstrap4 = "*"
 
 [requires]

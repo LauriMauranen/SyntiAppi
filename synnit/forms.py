@@ -1,6 +1,5 @@
-from .models import Synnintekija, Syntilaatu, TunnustettuSynti 
-from django.core.cache import cache 
-from django.forms import Form, IntegerField, ModelChoiceField, ModelForm  
+from .models import TunnustettuSynti 
+from django.forms import ModelForm  
 
 
 class SyntiForm(ModelForm):

@@ -13,7 +13,7 @@ var myChart = new Chart(ctx, {
     options: {
         title: {
             display: true,
-            text: synnintekija + ' on tehnyt syntiä'
+            text: synnintekija+' on tehnyt syntiä '+laatu+' '+kpl+' kpl'
         }
     }
 });
