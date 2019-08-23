@@ -1,6 +1,5 @@
+from .lauriextra import  cap, tarkista_malli 
 from django.db import models 
-from synnit.lauriextra import  cap, tarkista_malli 
-
 
 class Syntilaatu(models.Model):
     laatu_nimi = models.CharField(max_length=100, primary_key=True)
@@ -22,7 +21,7 @@ class Synnintekija(models.Model):
         super().save(*args, **kwargs)
 
 
-from django.urls import reverse 
+#from django.urls import reverse 
 
 class TunnustettuSynti(models.Model):
     tekija = models.ForeignKey(Synnintekija, on_delete=models.CASCADE)
@@ -34,13 +33,13 @@ class TunnustettuSynti(models.Model):
             models.UniqueConstraint(fields=['tekija', 'laatu'], name='kyrsa')
         ]
     
-    def get_absolute_url(self):
-        return reverse('syntiappi_kuvalla')
+#    def get_absolute_url(self):
+#        return reverse('syntiappi_kuvalla')
         
     def save(self, *args, **kwargs):
         self.kpl += tarkista_malli(self.tekija.id, self.laatu, TunnustettuSynti)
         if(self.kpl > 0):
-            super(TunnustettuSynti, self).save(*args, **kwargs)
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return str(self.tekija)+' '+str(self.laatu)+', '+str(self.kpl)
