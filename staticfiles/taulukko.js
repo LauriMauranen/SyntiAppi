@@ -1,6 +1,6 @@
 var colors = ['blue','red','green','yellow','purple','orange','pink','brown','cyan','snow','plum','olive','moccasin','maroon', 'lime','khaki','indigo']
 
-var ctx = 'syntitaulukko';
+var ctx = 'syntidonitsi';
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -13,7 +13,7 @@ var myChart = new Chart(ctx, {
     options: {
         title: {
             display: true,
-            text: synnintekija+' on tehnyt syntiä '+laatu+' '+kpl+' kpl'
+            text: synnintekija+' tunnusti syntiä '+laatu+' '+kpl+' kpl'
         }
     }
 });

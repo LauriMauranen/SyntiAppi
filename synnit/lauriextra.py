@@ -2,10 +2,10 @@ def cap(sana):
     return sana.capitalize()
 
 
-def lisaa_nimet_maarat(context, form, tunnustettusynti_malli):
+def lisaa_nimet_maarat(context, form, tunnustettu_synti_malli):
 
     tekija_id = form['tekija'].value()
-    syntilista = tunnustettusynti_malli.objects.filter(tekija=tekija_id)
+    syntilista = tunnustettu_synti_malli.objects.filter(tekija=tekija_id)
 
     if syntilista.exists():
         
@@ -49,17 +49,24 @@ def tarkista_malli(tekija_id, laatu, malli):
     return vastaus 
 
 
+from django.conf import settings
+import os 
 import pandas as pd
 
-def tee_csv(tunnustettu_synti_lista):
+def tee_csv(tunnustettu_synti_malli):
+    
+    lista = tunnustettu_synti_malli.objects.all()
+    
+    if not lista.exists():
+        return False 
     
     rivit = []
     sarakkeet = []
-    
-    for synti in tunnustettu_synti_lista:
+
+    for synti in lista:
         
-        t_nimi = synti.tekija.etunimi+' '+synti.tekija.sukunimi
-        l_nimi = synti.laatu.laatu_nimi
+        t_nimi = synti.tekija.sukunimi+' '+synti.tekija.etunimi 
+        l_nimi = str(synti.laatu)
 
         if t_nimi not in rivit:
             rivit.append(t_nimi)
@@ -85,4 +92,5 @@ def tee_csv(tunnustettu_synti_lista):
     df = pd.DataFrame(data, index=rivit, columns=sarakkeet)
     df.sort_index(axis=0, inplace=True)
     df.sort_index(axis=1, inplace=True)
-    df.to_csv(path_or_buf='data/testi.csv')
+    df.to_csv(path_or_buf=os.path.join(settings.MEDIA_ROOT,'syntitaulukko.csv'))
+    return True 

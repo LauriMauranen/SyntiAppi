@@ -13,20 +13,31 @@
     
     <form method="post">
         {% csrf_token %}
-        {% bootstrap_form form show_label=False field_class="col-sm-4 align-self-center" %}
-        <input type="submit" value="Tunnusta synnit">
+        {% bootstrap_form form show_label=False field_class="col-sm-4" %}
+        <div class="container">
+            <div class="row">
+                <div class="col-0 col-sm-4"></div>
+                <div class="col-7 col-sm-4">
+                    <input type="submit" value="Tunnusta synnit">
+                </div>
+                <div class="col-5 col-sm-4">
+                    <a href="/taulukko" style="float:left">Lataa csv</a>
+                </div>
+                
+            </div>
+        </div>
     </form>
     
     {% if synnit_nimi %}
     <div class="chart-container" style="max-width:450px;">
-        <canvas id="syntitaulukko" height="1" width="1"></canvas>
+        <canvas id="syntidonitsi" height="1" width="1"></canvas>
     </div>
     <script>
         var synnit_nimi = {{synnit_nimi|safe}};
         var synnit_maara = {{synnit_maara|safe}};
-        var synnintekija = "{{synnintekija}}"
-        var laatu = "{{laatu}}"
-        var kpl = {{kpl}}
+        var synnintekija = "{{synnintekija}}";
+        var laatu = "{{laatu}}";
+        var kpl = {{kpl}};
     </script>
     <script src="static/taulukko.js"></script>
     {% endif %}
