@@ -19,6 +19,3 @@ pylibmc = "*"
 django-bmemcached = "*"
 pygments = "*"
 django-bootstrap4 = "*"
-
-[requires]
-python_version = "3.6.10"
